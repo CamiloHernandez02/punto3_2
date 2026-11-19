@@ -1,0 +1,24 @@
+$ make tokens
+LIN:COL  CATEGORIA       LEXEMA  ->  VALOR
+-------- --------------- ----------------------------------
+  1:1    PALABRA_CLAVE   insertar
+  1:10   PALABRA_CLAVE   en
+  1:13   PALABRA_CLAVE   tabla
+  1:19   IDENTIFICADOR   clientes
+  1:28   PALABRA_CLAVE   valores
+  1:35   PUNTUACION      :
+  1:37   IDENTIFICADOR   id
+  1:40   PUNTUACION      =
+  1:42   ENTERO          1  ->  1
+  1:43   PUNTUACION      ,
+  1:45   IDENTIFICADOR   nombre
+  1:52   PUNTUACION      =
+  1:54   CADENA          'Ana'  ->  "Ana"
+  1:59   PUNTUACION      ,
+  1:61   IDENTIFICADOR   activo
+  1:68   PUNTUACION      =
+  1:70   BOOLEANO        verdadero  ->  verdadero
+  1:80   PALABRA_CLAVE   fin
+  1:83   PUNTUACION      ;
+
+Total de tokens: 19   Errores léxicos: 0

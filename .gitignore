@@ -1,0 +1,8 @@
+# Ignorar documentos de texto y archivos sueltos
+*.odt
+*.doc
+*.docx
+*.pdf
+Informe_IEEE_Punto_3_2_Apellidos_GoogleDocs*
+Punto_3_2_Resuelto.md
+Makefile

@@ -1,0 +1,14 @@
+$ flex -v ... (estadisticas del AFD generado)
+flex version 2.6.4 usage statistics:
+  scanner options: -ivI8 -Cem -o/tmp/l.c
+  283/2000 NFA states
+  61/1000 DFA states (437 words)
+  17 rules
+  Compressed tables always back-up
+  1/40 start conditions
+  161 epsilon states, 84 double epsilon states
+
+$ bison --report=all (resumen)
+Estados LALR(1): 24
+Conflictos: 0
+(sin avisos ni conflictos; %expect 0 verificado)

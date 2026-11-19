@@ -1,0 +1,135 @@
+-- ============================================================================
+-- entrada_prueba.txt  --  Punto 3.2
+-- Cada caso va precedido de un comentario  -- [Txx] CATEGORÍA: descripción
+-- que indica el resultado esperado:
+--   VÁLIDA    -> se inserta la fila
+--   LÉXICO    -> el escáner reporta un error léxico y la sentencia se descarta
+--   SINTAXIS  -> el parser reporta un error sintáctico y se recupera en el ';'
+--   SEMÁNTICA -> la sintaxis es correcta pero el esquema/la BD la rechaza
+-- Los comentarios que empiezan con -- son ignorados por el analizador léxico.
+-- ============================================================================
+
+-- ---------------------------------------------------------------------------
+-- GRUPO A: sentencias VÁLIDAS (se esperan 10 inserciones)
+-- ---------------------------------------------------------------------------
+
+-- [T01] VÁLIDA: sentencia completa con los cuatro campos
+insertar en tabla clientes valores: id = 1, nombre = 'Ana Torres', ciudad = 'Tunja', activo = verdadero fin;
+
+-- [T02] VÁLIDA: se omite el id (clave primaria autoincremental) y activo = falso
+insertar en tabla clientes valores: nombre = 'Luis Pérez', ciudad = 'Duitama', activo = falso fin;
+
+-- [T03] VÁLIDA: palabras reservadas en mayúsculas, tabla y campos con otra capitalización
+INSERTAR EN TABLA Clientes VALORES: ID = 3, NOMBRE = 'María Gómez', ACTIVO = TRUE FIN;
+
+-- [T04] VÁLIDA: sentencia en varias líneas y con comentario intercalado
+insertar en tabla productos   -- el comentario se ignora
+valores:
+    codigo     = 100,
+    nombre     = 'Teclado mecánico',
+    stock      = 25,
+    disponible = verdadero
+fin;
+
+-- [T05] VÁLIDA: campos en distinto orden al de la tabla y entero negativo
+insertar en tabla productos valores: disponible = falso, stock = -3, nombre = 'Cable HDMI', codigo = 101 fin;
+
+-- [T06] VÁLIDA: comilla escapada ('') y las palabras ';' y fin dentro de la cadena
+insertar en tabla clientes valores: id = 4, nombre = 'O''Brien; fin', ciudad = 'Bogotá' fin;
+
+-- [T07] VÁLIDA: pedido con clave foránea existente (cliente 1)
+insertar en tabla pedidos valores: id = 1, cliente_id = 1, total = 150000, pagado = false fin;
+
+-- [T08] VÁLIDA: pedido con solo el campo obligatorio (id autoincremental)
+insertar en tabla pedidos valores: cliente_id = 2 fin;
+
+-- [T09] VÁLIDA: producto con solo el nombre (codigo autoincremental)
+insertar en tabla productos valores: nombre = 'Mouse óptico' fin;
+
+-- [T10] VÁLIDA: entero en el límite superior de 64 bits
+insertar en tabla productos valores: codigo = 5000, nombre = 'Licencia', stock = 9223372036854775807 fin;
+
+-- ---------------------------------------------------------------------------
+-- GRUPO B: errores LÉXICOS (el escáner los detecta)
+-- ---------------------------------------------------------------------------
+
+-- [T11] LÉXICO: carácter no reconocido (@)
+insertar en tabla clientes valores: id = 10, nombre = 'Eva' @ fin;
+
+-- [T12] LÉXICO: comillas dobles en lugar de simples (2 diagnósticos: abre y cierra)
+insertar en tabla clientes valores: id = 11, nombre = "Eva" fin;
+
+-- [T13] LÉXICO: cadena sin cerrar (el resto de la línea se consume)
+insertar en tabla clientes valores:
+    id = 12, nombre = 'Sin cerrar,
+    ciudad = 'Tunja' fin;
+
+-- [T14] LÉXICO: entero fuera del rango de 64 bits
+insertar en tabla productos valores: codigo = 6000, nombre = 'X', stock = 99999999999999999999 fin;
+
+-- ---------------------------------------------------------------------------
+-- GRUPO C: errores SINTÁCTICOS (el parser los detecta)
+-- ---------------------------------------------------------------------------
+
+-- [T15] SINTAXIS: falta la palabra clave fin
+insertar en tabla clientes valores: id = 20, nombre = 'Sin fin';
+
+-- [T16] SINTAXIS: falta el símbolo ':' después de valores
+insertar en tabla clientes valores id = 21, nombre = 'Sin dos puntos' fin;
+
+-- [T17] SINTAXIS: coma sobrante antes de fin
+insertar en tabla clientes valores: id = 22, nombre = 'Coma sobrante', fin;
+
+-- [T18] SINTAXIS: falta el símbolo '=' en una asignación
+insertar en tabla clientes valores: id 23, nombre = 'Sin igual' fin;
+
+-- [T19] SINTAXIS: asignación sin valor
+insertar en tabla clientes valores: id = , nombre = 'Sin valor' fin;
+
+-- [T20] SINTAXIS: lista de asignaciones vacía
+insertar en tabla clientes valores: fin;
+
+-- [T21] SINTAXIS: palabra reservada mal escrita (insertr)
+insertr en tabla clientes valores: id = 24, nombre = 'Mal escrita' fin;
+
+-- [T22] SINTAXIS: nombre de campo que empieza con dígito (2campo = ENTERO + IDENT)
+insertar en tabla clientes valores: id = 25, 2campo = 'x' fin;
+
+-- [T23] SINTAXIS: falta el ';' final.
+--       La recuperación en modo pánico descarta tokens hasta el siguiente ';',
+--       por lo que la sentencia [T24] que sigue también se descarta.
+insertar en tabla clientes valores: id = 26, nombre = 'Sin punto y coma' fin
+
+-- [T24] DESCARTADA (efecto de T23): sintácticamente válida, pero nunca se ejecuta
+insertar en tabla clientes valores: id = 27, nombre = 'Descartada por la recuperación' fin;
+
+-- ---------------------------------------------------------------------------
+-- GRUPO D: sintaxis correcta, rechazadas por la validación SEMÁNTICA / la BD
+-- ---------------------------------------------------------------------------
+
+-- [T25] SEMÁNTICA: la tabla no existe
+insertar en tabla ventas valores: id = 1 fin;
+
+-- [T26] SEMÁNTICA: el campo apellido no existe en clientes
+insertar en tabla clientes valores: id = 30, apellido = 'Gómez', nombre = 'Ana' fin;
+
+-- [T27] SEMÁNTICA: tipo incorrecto (CADENA en un campo INTEGER)
+insertar en tabla productos valores: codigo = 31, nombre = 'Teclado', stock = 'muchos' fin;
+
+-- [T28] SEMÁNTICA: tipo incorrecto (ENTERO en un campo BOOLEAN)
+insertar en tabla clientes valores: id = 32, nombre = 'Pedro', activo = 1 fin;
+
+-- [T29] SEMÁNTICA: campo repetido
+insertar en tabla clientes valores: id = 33, nombre = 'A', nombre = 'B' fin;
+
+-- [T30] SEMÁNTICA: falta un campo obligatorio (nombre es NOT NULL)
+insertar en tabla clientes valores: id = 34, ciudad = 'Paipa' fin;
+
+-- [T31] BASE DE DATOS: clave primaria duplicada (el id 1 ya existe por T01)
+insertar en tabla clientes valores: id = 1, nombre = 'Duplicada' fin;
+
+-- [T32] BASE DE DATOS: clave foránea inexistente (no hay cliente 999)
+insertar en tabla pedidos valores: cliente_id = 999, total = 10 fin;
+
+-- [T33] SEMÁNTICA: tabla interna de SQLite (reservada)
+insertar en tabla sqlite_master valores: name = 'x' fin;

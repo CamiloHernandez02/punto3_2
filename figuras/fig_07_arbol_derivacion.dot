@@ -1,0 +1,39 @@
+digraph ARBOL {
+  bgcolor="white"; pad=0.3; nodesep=0.25; ranksep=0.45; ordering=out;
+  node [shape=ellipse, style=filled, fillcolor="#dbe8f7", fontname="Helvetica", fontsize=12];
+  edge [arrowhead=none];
+
+  P0  [label="programa"];
+  P1  [label="programa"];  eps [label="ε", shape=plaintext, style=""];
+  S   [label="sentencia"];
+  LA  [label="lista_asignaciones"];
+  LA1 [label="lista_asignaciones"];
+  AS1 [label="asignacion"];
+  AS2 [label="asignacion"];
+  V1  [label="valor"];
+  V2  [label="valor"];
+
+  t1 [shape=box, fillcolor="#fff2cc", label="INSERTAR\ninsertar"];
+  t2 [shape=box, fillcolor="#fff2cc", label="EN\nen"];
+  t3 [shape=box, fillcolor="#fff2cc", label="TABLA\ntabla"];
+  t4 [shape=box, fillcolor="#fff2cc", label="IDENT\nclientes"];
+  t5 [shape=box, fillcolor="#fff2cc", label="VALORES\nvalores"];
+  t6 [shape=box, fillcolor="#fff2cc", label="':'"];
+  t7 [shape=box, fillcolor="#fff2cc", label="FIN\nfin"];
+  t8 [shape=box, fillcolor="#fff2cc", label="';'"];
+  c1 [shape=box, fillcolor="#fff2cc", label="IDENT\nid"];
+  e1 [shape=box, fillcolor="#fff2cc", label="'='"];
+  n1 [shape=box, fillcolor="#fff2cc", label="ENTERO\n1"];
+  co [shape=box, fillcolor="#fff2cc", label="','"];
+  c2 [shape=box, fillcolor="#fff2cc", label="IDENT\nnombre"];
+  e2 [shape=box, fillcolor="#fff2cc", label="'='"];
+  s1 [shape=box, fillcolor="#fff2cc", label="CADENA\n'Ana'"];
+
+  P0 -> P1; P0 -> S;
+  P1 -> eps;
+  S -> t1; S -> t2; S -> t3; S -> t4; S -> t5; S -> t6; S -> LA; S -> t7; S -> t8;
+  LA -> LA1; LA -> co; LA -> AS2;
+  LA1 -> AS1;
+  AS1 -> c1; AS1 -> e1; AS1 -> V1; V1 -> n1;
+  AS2 -> c2; AS2 -> e2; AS2 -> V2; V2 -> s1;
+}

@@ -1,0 +1,77 @@
+$ python3 tests/verificar.py
+
+1. Integración: tests/entrada_prueba.txt
+  [PASS] código de salida 1 (hay sentencias rechazadas)
+  [PASS] 10 sentencias insertadas
+  [PASS] 13 sentencias rechazadas por léxico/sintaxis
+  [PASS] 9 sentencias rechazadas por semántica/BD
+  [PASS] 5 diagnósticos léxicos
+  [PASS] 9 diagnósticos sintácticos
+  [PASS] mensaje presente: carácter no reconocido '@'
+  [PASS] mensaje presente: las cadenas se delimitan con comilla simple
+  [PASS] mensaje presente: cadena sin cerrar
+  [PASS] mensaje presente: entero fuera del rango de 64 bits
+  [PASS] mensaje presente: se esperaba 'fin' o ','
+  [PASS] mensaje presente: se esperaba ':'
+  [PASS] mensaje presente: se esperaba '='
+  [PASS] mensaje presente: se esperaba fin de archivo o 'insertar'
+  [PASS] mensaje presente: la tabla 'ventas' no existe
+  [PASS] mensaje presente: el campo 'apellido' no existe en la tabla 'clientes'
+  [PASS] mensaje presente: el campo 'stock' es de tipo INTEGER y no admite un valor CADENA
+  [PASS] mensaje presente: el campo 'activo' es de tipo BOOLEAN y no admite un valor ENTERO
+  [PASS] mensaje presente: el campo 'nombre' aparece más de una vez
+  [PASS] mensaje presente: falta el campo obligatorio 'nombre' de la tabla 'clientes'
+  [PASS] mensaje presente: UNIQUE constraint failed: clientes.id
+  [PASS] mensaje presente: FOREIGN KEY constraint failed
+  [PASS] mensaje presente: la tabla 'sqlite_master' es reservada del sistema
+  [PASS] BD: 4 filas en clientes
+  [PASS] BD: 4 filas en productos
+  [PASS] BD: 2 filas en pedidos
+  [PASS] BD: cadena con '' y ';' almacenada como O'Brien; fin
+  [PASS] BD: acentos y booleano TRUE -> 1
+  [PASS] BD: entero máximo de 64 bits
+  [PASS] BD: ninguna sentencia sintácticamente inválida se almacenó
+  [PASS] los errores no se mezclan con la salida estándar
+
+2. Léxico: casos puntuales
+  [PASS] 'insertar'     -> ['PALABRA_CLAVE']
+  [PASS] 'INSERTAR'     -> ['PALABRA_CLAVE']
+  [PASS] 'fin'          -> ['PALABRA_CLAVE']
+  [PASS] 'Fin'          -> ['PALABRA_CLAVE']
+  [PASS] 'final'        -> ['IDENTIFICADOR']
+  [PASS] 'fin2'         -> ['IDENTIFICADOR']
+  [PASS] 'fin_'         -> ['IDENTIFICADOR']
+  [PASS] 'entero'       -> ['IDENTIFICADOR']
+  [PASS] 'en'           -> ['PALABRA_CLAVE']
+  [PASS] 'verdadero'    -> ['BOOLEANO']
+  [PASS] 'TRUE'         -> ['BOOLEANO']
+  [PASS] 'falso'        -> ['BOOLEANO']
+  [PASS] 'truex'        -> ['IDENTIFICADOR']
+  [PASS] '_x1'          -> ['IDENTIFICADOR']
+  [PASS] '2campo'       -> ['ENTERO', 'IDENTIFICADOR']
+  [PASS] '-5'           -> ['ENTERO']
+  [PASS] '5-3'          -> ['ENTERO', 'ENTERO']
+  [PASS] '- 5'          -> ['ERROR_LEXICO', 'ENTERO']
+  [PASS] "'a''b'"       -> ['CADENA']
+  [PASS] "''"           -> ['CADENA']
+  [PASS] "'ñandú'"      -> ['CADENA']
+  [PASS] "'a;fin'"      -> ['CADENA']
+  [PASS] '-- hola fin'  -> []
+  [PASS] 'x -- hola'    -> ['IDENTIFICADOR']
+  [PASS] '@'            -> ['ERROR_LEXICO']
+  [PASS] 'ñ'            -> ['ERROR_LEXICO']
+  [PASS] '"a"'          -> ['ERROR_LEXICO', 'IDENTIFICADOR', 'ERROR_LEXICO']
+  [PASS] 'a:b;c,d=e'    -> ['IDENTIFICADOR', 'PUNTUACION', 'IDENTIFICADOR', 'PUNTUACION', 'IDENTIFICADOR', 'PUNTUACION', 'IDENTIFICADOR', 'PUNTUACION', 'IDENTIFICADOR']
+
+3. AFD léxicos formales vs. escáner Flex
+  (4533 cadenas candidatas analizadas por Flex en una sola ejecución)
+  [PASS] AFD IDENT coincide con Flex
+  [PASS] AFD ENTERO coincide con Flex
+  [PASS] AFD CADENA coincide con Flex
+  [PASS] AFD COMENTARIO coincide con Flex
+
+4. AFD sintáctico (a nivel de tokens) vs. parser Bison
+  (430 programas distintos; 28 aceptados por el AFD)
+  [PASS] AFD sintáctico y Bison aceptan exactamente los mismos programas
+
+RESULTADO: todas las comprobaciones pasaron.

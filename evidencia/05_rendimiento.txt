@@ -1,0 +1,3 @@
+$ for f in 2000 sentencias: benchmark (entorno de referencia)
+100000 sentencias validas (11.8 MB): ~1.2-1.3 s, ~80000 sentencias/s
+5000 sentencias: COMMIT por fila 3.23 s vs transaccion unica 0.081 s (40x)

@@ -1,0 +1,35 @@
+digraph BD {
+  rankdir=LR; bgcolor="white"; pad=0.3; nodesep=0.7; ranksep=1.0;
+  node [shape=plaintext, fontname="Helvetica", fontsize=12];
+  edge [fontname="Helvetica", fontsize=11];
+
+  clientes [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD COLSPAN="2" BGCOLOR="#dbe8f7"><B>clientes</B></TD></TR>
+      <TR><TD PORT="id" ALIGN="LEFT">id</TD><TD ALIGN="LEFT">INTEGER · PK</TD></TR>
+      <TR><TD ALIGN="LEFT">nombre</TD><TD ALIGN="LEFT">TEXT · NOT NULL</TD></TR>
+      <TR><TD ALIGN="LEFT">ciudad</TD><TD ALIGN="LEFT">TEXT</TD></TR>
+      <TR><TD ALIGN="LEFT">activo</TD><TD ALIGN="LEFT">BOOLEAN</TD></TR>
+    </TABLE>>];
+
+  pedidos [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD COLSPAN="2" BGCOLOR="#dbe8f7"><B>pedidos</B></TD></TR>
+      <TR><TD ALIGN="LEFT">id</TD><TD ALIGN="LEFT">INTEGER · PK</TD></TR>
+      <TR><TD PORT="cid" ALIGN="LEFT">cliente_id</TD><TD ALIGN="LEFT">INTEGER · NOT NULL · FK</TD></TR>
+      <TR><TD ALIGN="LEFT">total</TD><TD ALIGN="LEFT">INTEGER</TD></TR>
+      <TR><TD ALIGN="LEFT">pagado</TD><TD ALIGN="LEFT">BOOLEAN</TD></TR>
+    </TABLE>>];
+
+  productos [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD COLSPAN="2" BGCOLOR="#dbe8f7"><B>productos</B></TD></TR>
+      <TR><TD ALIGN="LEFT">codigo</TD><TD ALIGN="LEFT">INTEGER · PK</TD></TR>
+      <TR><TD ALIGN="LEFT">nombre</TD><TD ALIGN="LEFT">TEXT · NOT NULL</TD></TR>
+      <TR><TD ALIGN="LEFT">stock</TD><TD ALIGN="LEFT">INTEGER</TD></TR>
+      <TR><TD ALIGN="LEFT">disponible</TD><TD ALIGN="LEFT">BOOLEAN</TD></TR>
+    </TABLE>>];
+
+  pedidos:cid -> clientes:id [label="REFERENCES"];
+  productos [group=g2];
+}

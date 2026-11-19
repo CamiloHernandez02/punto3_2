@@ -1,0 +1,22 @@
+digraph ARQ {
+  rankdir=LR; bgcolor="white"; pad=0.3; nodesep=0.45; ranksep=0.55;
+  node [shape=box, style="rounded,filled", fillcolor="#f4f4f4", fontname="Helvetica", fontsize=12, margin="0.18,0.10"];
+  edge [fontname="Helvetica", fontsize=11];
+
+  entrada [label="Entrada\n(archivo, texto o stdin)", fillcolor="#ffffff"];
+  lexer   [label="Analizador léxico\nFlex · lexer.l\nAFD de 61 estados", fillcolor="#dbe8f7"];
+  parser  [label="Analizador sintáctico\nBison · parser.y\nLALR(1) de 24 estados", fillcolor="#dbe8f7"];
+  sem     [label="Validación semántica\ndb.c · catálogo de SQLite\n(tabla, campos, tipos)", fillcolor="#e3f1dc"];
+  ins     [label="INSERT preparado\nparámetros enlazados\n(sqlite3_bind_*)", fillcolor="#e3f1dc"];
+  bd      [label="Base de datos\nSQLite · taller.db\n3 tablas × 4 campos", shape=cylinder, fillcolor="#fff2cc"];
+  err     [label="Diagnósticos\n(stderr): línea, columna\ny tipo de error", fillcolor="#fbe0e0"];
+
+  entrada -> lexer  [label="caracteres"];
+  lexer   -> parser [label="tokens"];
+  parser  -> sem    [label="sentencia\nválida"];
+  sem     -> ins    [label="esquema\ncorrecto"];
+  ins     -> bd;
+  lexer   -> err [style=dashed, color="#b04040"];
+  parser  -> err [style=dashed, color="#b04040"];
+  sem     -> err [style=dashed, color="#b04040"];
+}

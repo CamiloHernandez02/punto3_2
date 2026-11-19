@@ -1,0 +1,63 @@
+$ build/sqlparser -l -d build/demo.db tests/entrada_prueba.txt 2>&1
+[OK] línea 17: 1 fila insertada en 'clientes' (rowid=1)
+[OK] línea 20: 1 fila insertada en 'clientes' (rowid=2)
+[OK] línea 23: 1 fila insertada en 'Clientes' (rowid=3)
+[OK] línea 26: 1 fila insertada en 'productos' (rowid=100)
+[OK] línea 35: 1 fila insertada en 'productos' (rowid=101)
+[OK] línea 38: 1 fila insertada en 'clientes' (rowid=4)
+[OK] línea 41: 1 fila insertada en 'pedidos' (rowid=1)
+[OK] línea 44: 1 fila insertada en 'pedidos' (rowid=2)
+[OK] línea 47: 1 fila insertada en 'productos' (rowid=102)
+[OK] línea 50: 1 fila insertada en 'productos' (rowid=5000)
+Error léxico [línea 57, col 61]: carácter no reconocido '@'
+Error léxico [línea 60, col 55]: las cadenas se delimitan con comilla simple ('), no doble (")
+Error léxico [línea 60, col 59]: las cadenas se delimitan con comilla simple ('), no doble (")
+Error léxico [línea 64, col 23]: cadena sin cerrar (falta la comilla ' final)
+Error léxico [línea 68, col 75]: entero fuera del rango de 64 bits: 99999999999999999999
+Error sintáctico [línea 75, col 64]: se encontró ';'; se esperaba 'fin' o ','
+Error sintáctico [línea 78, col 36]: se encontró identificador; se esperaba ':'
+Error sintáctico [línea 81, col 72]: se encontró 'fin'; se esperaba identificador
+Error sintáctico [línea 84, col 40]: se encontró entero; se esperaba '='
+Error sintáctico [línea 87, col 42]: se encontró ','; se esperaba cadena o entero o booleano
+Error sintáctico [línea 90, col 37]: se encontró 'fin'; se esperaba identificador
+Error sintáctico [línea 93, col 1]: se encontró identificador; se esperaba fin de archivo o 'insertar'
+Error sintáctico [línea 96, col 46]: se encontró entero; se esperaba identificador
+Error sintáctico [línea 104, col 1]: se encontró 'insertar'; se esperaba ';'
+Error semántico [línea 111, col 1]: la tabla 'ventas' no existe
+Error semántico [línea 114, col 46]: el campo 'apellido' no existe en la tabla 'clientes'
+Error semántico [línea 117, col 71]: el campo 'stock' es de tipo INTEGER y no admite un valor CADENA
+Error semántico [línea 120, col 64]: el campo 'activo' es de tipo BOOLEAN y no admite un valor ENTERO
+Error semántico [línea 123, col 60]: el campo 'nombre' aparece más de una vez
+Error semántico [línea 126, col 1]: falta el campo obligatorio 'nombre' de la tabla 'clientes'
+Error de base de datos [línea 129, col 1]: UNIQUE constraint failed: clientes.id
+Error de base de datos [línea 132, col 1]: FOREIGN KEY constraint failed
+Error semántico [línea 135, col 1]: la tabla 'sqlite_master' es reservada del sistema
+
+================ RESUMEN ================
+Sentencias insertadas ..................... 10
+Sentencias rechazadas (léxico/sintaxis) ... 13
+Sentencias rechazadas (semántica/BD) ...... 9
+Diagnósticos léxicos ...................... 5
+Diagnósticos sintácticos .................. 9
+
+Tabla clientes (4 filas)
+| id | nombre       | ciudad  | activo    |
++----+--------------+---------+-----------+
+| 1  | Ana Torres   | Tunja   | verdadero |
+| 2  | Luis Pérez   | Duitama | falso     |
+| 3  | María Gómez  | NULL    | verdadero |
+| 4  | O'Brien; fin | Bogotá  | NULL      |
+
+Tabla productos (4 filas)
+| codigo | nombre           | stock               | disponible |
++--------+------------------+---------------------+------------+
+| 100    | Teclado mecánico | 25                  | verdadero  |
+| 101    | Cable HDMI       | -3                  | falso      |
+| 102    | Mouse óptico     | NULL                | NULL       |
+| 5000   | Licencia         | 9223372036854775807 | NULL       |
+
+Tabla pedidos (2 filas)
+| id | cliente_id | total  | pagado |
++----+------------+--------+--------+
+| 1  | 1          | 150000 | falso  |
+| 2  | 2          | NULL   | NULL   |
